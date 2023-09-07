@@ -117,7 +117,11 @@ class Blacklist
      */
     public function has(Payload $payload)
     {
-        $val = $this->storage->get($this->getKey($payload));
+        try {
+            $val = $this->storage->get($this->getKey($payload));
+        } catch (\Throwable $exception) {
+            $val = null;
+        }
 
         // exit early if the token was blacklisted forever,
         if ('forever' === $val) {
